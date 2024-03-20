@@ -8,49 +8,6 @@ The sample code here allows a WebRTC client to receive calls from PSTN, to make 
 
 ## Set up
 
-### Set up your Vonage Voice API application credentials and phone number
-
-[Log in to your](https://ui.idp.vonage.com/ui/auth/login) or [sign up for a](https://ui.idp.vonage.com/ui/auth/registration) Vonage API account.
-
-Go to [Your applications](https://dashboard.nexmo.com/applications), access an existing application or [+ Create a new application](https://dashboard.nexmo.com/applications/new).
-
-Under **Capabilities** section (click on [Edit] if you do not see this section):
-
-Enable Voice
-- Under Answer URL, leave HTTP GET, and enter https://\<host\>:\<port\>/voice/answer (replace \<host\> and \<port\> with the public host name and if necessary public port of the server where this sample application is running), e.g.</br>
-*https://yyyyyyyy.ngrok.io/voice/answer*</br>
-or
-*https://myappname.herokuapp.com/voice/answer*</br>
-or
-*https://myserver2.mycompany.com:40000/voice/answer*</br>
-- Under Event URL, **select** **_HTTP POST_**, and enter https://\<host\>:\<port\>/voice/event (replace \<host\> and \<port\> with the public host name and if necessary public port of the server where this sample application is running), e.g.</br>
-*https://yyyyyyyy.ngrok.io/voice/event*</br>
-or
-*https://myappname.herokuapp.com/voice/event*</br>
-or
-*https://myserver2.mycompany.com:40000/voice/event*</br>
-
-- Click on [Generate public and private key] if you did not yet create or want new ones, then save as **.private.key** file (note the leading dot in the file name) in this application folder.</br>
-**IMPORTANT**: Do not forget to click on [Save changes] at the bottom of the screen if you have created a new key set.</br>
-- Link a phone number to this application if none has been linked to the application.
-
-Please take note of your **application ID** and the **linked phone number** (as they are needed in the very next section.)
-
-For the next steps, you will need:</br>
-- Your [Vonage API key](https://dashboard.nexmo.com/settings) (as **`API_KEY`**)</br>
-- Your [Vonage API secret](https://dashboard.nexmo.com/settings), not signature secret, (as **`API_SECRET`**)</br>
-- Your `application ID` (as **`APP_ID`**),</br>
-- The **`phone number linked`** to your application (as **`SERVICE_NUMBER`**), external parties will **call that number**,</br>
-
-### Set up the server application
-
-Copy or rename env-example to .env<br>
-Update parameters in .env file<br>
-Have Node.js installed on your system, this application has been tested with Node.js version 18.19.1<br>
-Install node modules with the command "npm install"<br>
-Start the server application with the command "node in-app-voice-server"<br>
-This Node.js server application (this repository) is running on local port 8000.</br>
-
 ### Local deployment using ngrok
 
 If you plan to test using `Local deployment with ngrok` (Internet tunneling service), here are the instructions to set up ngrok:<br>
@@ -96,6 +53,49 @@ run this server application (from this repository), e.g.</br>
 	*`myappname.herokuapp.com`, `myserver.mycompany.com:40000`*</br>
 
 For Heroku deployment, see more details in the next section **Command Line Heroku deployment**.
+
+### Set up your Vonage Voice API application credentials and phone number
+
+[Log in to your](https://ui.idp.vonage.com/ui/auth/login) or [sign up for a](https://ui.idp.vonage.com/ui/auth/registration) Vonage API account.
+
+Go to [Your applications](https://dashboard.nexmo.com/applications), access an existing application or [+ Create a new application](https://dashboard.nexmo.com/applications/new).
+
+Under **Capabilities** section (click on [Edit] if you do not see this section):
+
+Enable Voice
+- Under Answer URL, leave HTTP GET, and enter https://\<host\>:\<port\>/voice/answer (replace \<host\> and \<port\> with the public host name and if necessary public port of the server where this sample application is running), e.g.</br>
+*https://yyyyyyyy.ngrok.io/voice/answer*</br>
+or
+*https://myappname.herokuapp.com/voice/answer*</br>
+or
+*https://myserver2.mycompany.com:40000/voice/answer*</br>
+- Under Event URL, **select** **_HTTP POST_**, and enter https://\<host\>:\<port\>/voice/event (replace \<host\> and \<port\> with the public host name and if necessary public port of the server where this sample application is running), e.g.</br>
+*https://yyyyyyyy.ngrok.io/voice/event*</br>
+or
+*https://myappname.herokuapp.com/voice/event*</br>
+or
+*https://myserver2.mycompany.com:40000/voice/event*</br>
+
+- Click on [Generate public and private key] if you did not yet create or want new ones, then save as **.private.key** file (note the leading dot in the file name) in this application folder.</br>
+**IMPORTANT**: Do not forget to click on [Save changes] at the bottom of the screen if you have created a new key set.</br>
+- Link a phone number to this application if none has been linked to the application.
+
+Please take note of your **application ID** and the **linked phone number** (as they are needed in the very next section.)
+
+For the next steps, you will need:</br>
+- Your [Vonage API key](https://dashboard.nexmo.com/settings) (as **`API_KEY`**)</br>
+- Your [Vonage API secret](https://dashboard.nexmo.com/settings), not signature secret, (as **`API_SECRET`**)</br>
+- Your `application ID` (as **`APP_ID`**),</br>
+- The **`phone number linked`** to your application (as **`SERVICE_NUMBER`**), external parties will **call that number**,</br>
+
+### Set up the server application
+
+Copy or rename env-example to .env<br>
+Update parameters in .env file<br>
+Have Node.js installed on your system, this application has been tested with Node.js version 18.19.1<br>
+Install node modules with the command "npm install"<br>
+Start the server application with the command "node in-app-voice-server"<br>
+This Node.js server application (this repository) is running on local port 8000.</br>
 
 ### Command Line Heroku deployment
 
