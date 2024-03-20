@@ -147,11 +147,11 @@ See more details in above section **Set up your Vonage Voice API application cre
 
 ## WebRTC client
 
-The sample WebRTC client in this repository is based on Vonage Client SDK.</br>
+The sample WebRTC client in this repository is based on the Vonage Client SDK.</br>
 
 Open it in a web browser using the address:</br>
 
-https://<myserver-address>/client.html</br>
+https://myserver-address/client.html</br>
 
 e.g.</br>
 https://xxxxxx.ngrok.io/client.html</br>
