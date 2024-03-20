@@ -80,7 +80,9 @@ or
 **IMPORTANT**: Do not forget to click on [Save changes] at the bottom of the screen if you have created a new key set.</br>
 - Link a phone number to this application if none has been linked to the application.
 
-Please take note of your **application ID** and the **linked phone number** (as they are needed in the very next section.)
+Please take note of your **application ID** and a **linked phone number** (as they are needed in the very next section.)
+
+Note: You may have more than one phone number linked to your application if needed.
 
 For the next steps, you will need:</br>
 - Your [Vonage API key](https://dashboard.nexmo.com/settings) (as **`API_KEY`**)</br>
