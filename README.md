@@ -86,7 +86,7 @@ For the next steps, you will need:</br>
 - Your [Vonage API key](https://dashboard.nexmo.com/settings) (as **`API_KEY`**)</br>
 - Your [Vonage API secret](https://dashboard.nexmo.com/settings), not signature secret, (as **`API_SECRET`**)</br>
 - Your `application ID` (as **`APP_ID`**),</br>
-- The **`phone number linked`** to your application (as **`SERVICE_NUMBER`**), external parties will **call that number**,</br>
+- A **`phone number linked`** to your application (as **`SERVICE_NUMBER`**), external parties will **call that number**.</br>
 
 ### Set up the server application
 
