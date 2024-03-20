@@ -139,8 +139,8 @@ git push heroku master
 On your Heroku dashboard where your application page is shown, click on `Open App` button, that hostname is the one to be used under your corresponding [Vonage Voice API application Capabilities](https://dashboard.nexmo.com/applications) (click on your application, then [Edit]).</br>
 
 For example, the respective links would be (replace *myappname* with actual value):</br>
-https://myappname.herokuapp.com/answer</br>
-https://myappname.herokuapp.com/event</br>
+https://myappname.herokuapp.com/voice/answer</br>
+https://myappname.herokuapp.com/voice/event</br>
 
 See more details in above section **Set up your Vonage Voice API application credentials and phone number**.
 
