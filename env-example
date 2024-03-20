@@ -1,0 +1,41 @@
+# The following 5 parameters are available from the dashboard (dashboard.nexmo.com) 
+
+# Your Vonage account API key
+API_KEY=xxxx
+
+# Your Vonage account API secret
+API_SECRET=xxxx
+
+# Your application ID 
+APP_ID=xxx
+
+# A phone number linked to your application
+SERVICE_NUMBER=12995551212
+
+#--- API region ---
+
+# Must match the "Region" field of your application setup (dasboard.nexmo.com)
+# Select the relevant one, comment all others
+
+# APAC - Singapore
+# API_REGION=api-ap-3.vonage.com
+
+# APAC - Australia
+# API_REGION=api-ap-4.vonage.com
+
+# Europe - West
+# API_REGION=api-eu-3.vonage.com
+
+# Europe - East
+# API_REGION=api-eu-4.vonage.com
+
+# US - East
+# API_REGION=api-us-3.vonage.com
+
+# US - West
+API_REGION=api-us-4.vonage.com
+
+#--- The following parameters are not related to your dashboard (dashboard.nexmo.com) ---
+
+# Sample list of allowable client SDK (WebRTC client) users
+CLIENT_SDK_USERS=john,jennifer,paul,sarah
