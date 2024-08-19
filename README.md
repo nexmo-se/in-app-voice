@@ -127,7 +127,8 @@ API_KEY</br>
 API_SECRET</br>
 APP_ID</br>
 SERVICE_NUMBER</br>
-PRIVATE_KEY_FILE with the value **./.private.key**</br>
+API_REGION</br>
+CLIENT_SDK_USERS</br>
 
 Now, deploy the application:
 

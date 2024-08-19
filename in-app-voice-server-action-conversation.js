@@ -94,13 +94,84 @@ const clientsArray = Array.from(clients);
 
 //==========================================================
 
+//-------
+
+// to simulate placing an outbound call, open a web browser and enter
+console.log('https://<server>/call?number=<phone_number>&conference=<name>');
+
+//---
+
+app.get('/call', (req, res) => {
+
+  const hostName = `${req.hostname}`;
+
+  // console.log('called number:', req.query.number);
+  // console.log('caller number:', serviceNumber);
+
+  const confName = req.query.conference;
+
+  vonage.voice.createOutboundCall({
+    to: [{
+      type: 'phone',
+      number: req.query.number
+    }],
+    from: {
+      type: 'phone',
+      number: serviceNumber
+    },
+    ringing_timer: 60,
+    answer_url: ['https://' + hostName + '/voice/answer1?conf_name=' + confName],
+    answer_method: 'GET',
+    event_url: ['https://' + hostName + '/voice/event1?conf_name=' + confName],
+    event_method: 'POST',
+  })
+    .then(resp => console.log(resp))
+    .catch(err => console.error(err));
+
+  res.status(200).send('Ok');
+
+});
+
+//---- Answer webhook for the outbound PSTN call -----
+
+app.get('/voice/answer1', (req, res) => {
+  
+  const nccoResponse = [
+    {
+      "action": "talk",
+      "text": "Connecting your call, please wait",
+      "language": "en-US",
+      "style": 11
+    },
+    {
+      "action": "conversation",
+      "endOnExit": true,
+      "startOnEnter":true,
+      "name": "conference_" + req.query.conf_name
+    }        
+  ];  
+
+  res.status(200).json(nccoResponse);
+
+});
+
+//---- Event webhook for the outbound PSTN call -----
+
+app.post('/voice/event1', (req, res) => {  
+
+  res.status(200).send('Ok');
+
+});
+
+//-----------
+
 app.get('/voice/answer', (req, res) => {
 
   let nccoResponse;
   
   if (req.query.from_user) {  // is it a call from a client SDK (WebRTC client)?
 
-    app.set("destination_" + req.query.uuid, req.query.to); // number or party to call (as requested by client SDK)
+    // app.set("destination_" + req.query.uuid, req.query.to); // number or party to call (as requested by client SDK)
 
     nccoResponse = [
       {
@@ -113,7 +184,8 @@ app.get('/voice/answer', (req, res) => {
         "action": "conversation",
         "endOnExit": true,
         "startOnEnter":true,
-        "name": "conference_" + req.query.uuid
+        // "name": "conference_" + req.query.uuid
+        "name": "conference_" + req.query.to      // conference name to match the one set for the outbound PSTN call
       }        
     ];  
 
@@ -151,90 +223,90 @@ app.post('/voice/event', (req, res) => {
 
   res.status(200).send('Ok');
 
-  if (req.body.type === 'transfer') {
+  // if (req.body.type === 'transfer') {
 
-    const uuid = req.body.uuid;
+  //   const uuid = req.body.uuid;
 
-    let hostName;
+  //   let hostName;
 
-    if (neruHost) {
-      hostName = neruHost;
-    } else {
-      hostName = req.hostname;
-    }    
+  //   if (neruHost) {
+  //     hostName = neruHost;
+  //   } else {
+  //     hostName = req.hostname;
+  //   }    
 
-    const destination = app.get("destination_" + req.body.uuid);
+  //   const destination = app.get("destination_" + req.body.uuid);
 
-    if (/^\d+$/.test(destination)) { // is it all digits? if yes, call that PSTN number
+  //   if (/^\d+$/.test(destination)) { // is it all digits? if yes, call that PSTN number
 
-      vonage.voice.createOutboundCall({
-        to: [{
-          type: 'phone',
-          number: destination
-        }],
-        from: {
-         type: 'phone',
-         number: serviceNumber
-        },
-        answer_url: ['https://' + hostName + '/voice/answerpstn?originalUuid=' + uuid],
-        answer_method: 'GET',
-        event_url: ['https://' + hostName + '/voice/eventpstn?originalUuid=' + uuid],
-        event_method: 'POST'
-        })
-        .then(res => console.log(`>>> outgoing call to PSTN number ${destination} status:`, res))
-          .catch(err => {
-            console.error(`>>> outgoing call to PSTN number ${destination} error:`, err)
-            console.error(err.body);
-      });
+  //     vonage.voice.createOutboundCall({
+  //       to: [{
+  //         type: 'phone',
+  //         number: destination
+  //       }],
+  //       from: {
+  //        type: 'phone',
+  //        number: serviceNumber
+  //       },
+  //       answer_url: ['https://' + hostName + '/voice/answerpstn?originalUuid=' + uuid],
+  //       answer_method: 'GET',
+  //       event_url: ['https://' + hostName + '/voice/eventpstn?originalUuid=' + uuid],
+  //       event_method: 'POST'
+  //       })
+  //       .then(res => console.log(`>>> outgoing call to PSTN number ${destination} status:`, res))
+  //         .catch(err => {
+  //           console.error(`>>> outgoing call to PSTN number ${destination} error:`, err)
+  //           console.error(err.body);
+  //     });
 
-    } else {  // call the client SDK logged in with user name or id <destination>
+  //   } else {  // call the client SDK logged in with user name or id <destination>
 
-      // //-- play audio file with ring back tone sound to client SDK leg --
+  //     // //-- play audio file with ring back tone sound to client SDK leg --
 
-      vonage.voice.streamAudio(uuid, 'http://client-sdk-cdn-files.s3.us-east-2.amazonaws.com/us.mp3', 0, -0.6)
-        .then(res => console.log(`>>> streaming ring back tone to PSTN call ${uuid} status:`, res))
-        .catch(err => {
-          console.error(`>>> streaming ring back tone to call ${uuid} error:`, err)
-          console.error(err.body);
-        });
+  //     vonage.voice.streamAudio(uuid, 'http://client-sdk-cdn-files.s3.us-east-2.amazonaws.com/us.mp3', 0, -0.6)
+  //       .then(res => console.log(`>>> streaming ring back tone to PSTN call ${uuid} status:`, res))
+  //       .catch(err => {
+  //         console.error(`>>> streaming ring back tone to call ${uuid} error:`, err)
+  //         console.error(err.body);
+  //       });
 
-      //-- call client SDK --
+  //     //-- call client SDK --
 
-      console.log('answer_url', 'https://' + hostName + '/voice/answerinapp?originalUuid=' + uuid);
+  //     console.log('answer_url', 'https://' + hostName + '/voice/answerinapp?originalUuid=' + uuid);
 
-      console.log('event_url', 'https://' + hostName + '/voice/answerinapp?originalUuid=' + uuid);
+  //     console.log('event_url', 'https://' + hostName + '/voice/answerinapp?originalUuid=' + uuid);
 
-      vonage.voice.createOutboundCall({
-        to: [{
-          type: 'app',
-          user: destination
-        }],
-        from: {
-         type: 'phone',
-         number: serviceNumber
-        },
-        answer_url: ['https://' + hostName + '/voice/answerinapp?originalUuid=' + uuid],
-        answer_method: 'GET',
-        event_url: ['https://' + hostName + '/voice/eventinapp?originalUuid=' + uuid],
-        event_method: 'POST'
-        })
-        .then(res => console.log(`>>> outgoing call to client SDK user ${destination} status:`, res))
-          .catch(err => {
-            console.error(`>>> outgoing call to client SDK user ${destination} error:`, err)
-            console.error(err.body);
-      });
+  //     vonage.voice.createOutboundCall({
+  //       to: [{
+  //         type: 'app',
+  //         user: destination
+  //       }],
+  //       from: {
+  //        type: 'phone',
+  //        number: serviceNumber
+  //       },
+  //       answer_url: ['https://' + hostName + '/voice/answerinapp?originalUuid=' + uuid],
+  //       answer_method: 'GET',
+  //       event_url: ['https://' + hostName + '/voice/eventinapp?originalUuid=' + uuid],
+  //       event_method: 'POST'
+  //       })
+  //       .then(res => console.log(`>>> outgoing call to client SDK user ${destination} status:`, res))
+  //         .catch(err => {
+  //           console.error(`>>> outgoing call to client SDK user ${destination} error:`, err)
+  //           console.error(err.body);
+  //     });
 
-    }      
+  //   }      
 
-  };
+  // };
 
   //--
 
-  if (req.body.status === 'completed') {
+  // if (req.body.status === 'completed') {
 
-    app.set("destination_" + req.body.uuid, null);
+  //   app.set("destination_" + req.body.uuid, null);
 
-  }; 
+  // }; 
   
 });
 
@@ -362,8 +434,16 @@ app.post('/voice/dtmf', (req, res) => {
 
   res.status(200).json(nccoResponse);
 
+});
+
+//--------
+
+app.post('/voice/rtc', (req, res) => {
+
+  res.status(200).send('Ok');
   
 });
+
 
 //=== Services for the WebRTC client (Vonage client SDK) ===============
 
@@ -384,6 +464,7 @@ app.post('/login', async (req, res) => {
     const jwt = await generateJWT(user);
         
     return res.status(200).json({ name: user, userId: userId, token: jwt, dc: dc, phone: serviceNumber });
+    // return res.status(200).json({ name: user, userId: userId, token: jwt, dc: 'us', phone: serviceNumber });
 })
 
 //--------

@@ -258,6 +258,14 @@ app.post('/voice/dtmf', (req, res) => {
   
 });
 
+//--------
+
+app.post('/voice/rtc', (req, res) => {
+
+  res.status(200).send('Ok');
+  
+});
+
 //=== Services for the WebRTC client (Vonage client SDK) ===============
 
 app.post('/login', async (req, res) => {
