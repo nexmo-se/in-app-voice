@@ -84,7 +84,7 @@
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ user: username, displayName: "agent1", display_name: "agent1" })
+          body: JSON.stringify({ user: username })
         }).then(async (response) => {
           const body = await response.json();
           console.log("Got registration response: ", body);

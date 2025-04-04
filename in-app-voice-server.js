@@ -233,9 +233,7 @@ app.post('/voice/dtmf', (req, res) => {
           ],
           "timeout": 45,
           "eventUrl": [`https://${req.hostname}/voice/inappevent`], 
-          "eventMethod": "POST",
-          "answerUrl": [`https://${req.hostname}/voice/inappanswer`], 
-          "answerMethod": "POST"
+          "eventMethod": "POST" 
         }
       ];
 
@@ -293,7 +291,7 @@ app.post('/login', async (req, res) => {
 
 async function getUser(name) {
     
-  const accessToken = tokenGenerate(appId, privateKey, {display_name: "agent1"});
+  const accessToken = tokenGenerate(appId, privateKey, {});
   
   return new Promise(async (resolve, reject) => {
     
@@ -327,17 +325,13 @@ async function getUser(name) {
     try {
         let body = {
             name: name,
-            // display_name: name
-            display_name: 'agent1',
-            custom_data: {param1: 'foo', param2: 'bar'}
+            display_name: name
         }
         results = await axios.post('https://api.nexmo.com/v0.3/users', body,
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + accessToken,
-                    'display_name': 'agent1',
-                    'custom_data': {param1: 'foo', param2: 'bar'}
+                    'Authorization': 'Bearer ' + accessToken
                 }
             });
         console.log("User creation results: ", results.data);
