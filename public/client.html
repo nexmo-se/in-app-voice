@@ -95,27 +95,6 @@
           }
         })
 
-        //-- test --
-        await fetch(baseUrl + "/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ user: username })
-        }).then(async (response) => {
-          const body = await response.json();
-          console.log("Got registration response: ", body);
-          if(body.token) {
-            getVonage(body.token, body.dc, username, body.phone);
-          } else {
-            mNotification.textContent = body.message;
-          }
-        })
-
-        //-- end test --
-
-
-
       } else {
         mNotification.textContent = ">>> User name must start with a letter";
         consoloe.log(">>> user name:", username);
@@ -123,7 +102,6 @@
 
     })
     
-
     //--
 
     function getVonage(token, dc, username, phone) {
@@ -160,7 +138,7 @@
       // Incoming call
       client.on('callInvite', (_callId, from, channel) => {
         callId = _callId;
-        console.log('>>> callId:', callId);
+        console.log('>>> Incoming call uuid:', callId);
         iNotification.textContent = ">>> You are receiving a call from:" + from;
 
         loginBtn.style.display = "none";
